@@ -321,6 +321,17 @@ app.put('/api/settings', authenticateToken, async (req, res) => {
   }
 });
 
+// --- Debug API ---
+app.get('/api/debug-env', (req, res) => {
+  const dbUrl = process.env.DATABASE_URL || 'NOT_SET';
+  // Mask the password for security before sending it back
+  const maskedUrl = dbUrl.replace(/:([^:@]+)@/, ':***@');
+  res.json({ 
+    DATABASE_URL: maskedUrl,
+    PORT: process.env.PORT || 'NOT_SET'
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
