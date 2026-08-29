@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  category    String
+  description String   @db.Text
+  imageUrl    String?
+  projectUrl  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Post {
+  id          Int      @id @default(autoincrement())
+  title       String
+  category    String
+  excerpt     String   @db.Text
+  content     String   @db.Text
+  imageUrl    String?
+  readTime    String
+  date        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model Profile {
+  id         Int      @id @default(autoincrement())
+  bio        String   @db.Text
+  education  String   @db.Text
+  experience String   @db.Text
+  skills     String?  @db.Text
+  imageUrl   String?
+  updatedAt  DateTime @updatedAt
+}
+
+model Settings {
+  id         Int      @id @default(autoincrement())
+  email      String?
+  mobile     String?
+  leetcode   String?
+  instagram  String?
+  youtube    String?
+  linkedin   String?
+  updatedAt  DateTime @updatedAt
+}
