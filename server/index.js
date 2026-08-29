@@ -17,6 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+app.set('trust proxy', 1); // Required for express-rate-limit behind Hostinger's reverse proxy
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey123';
@@ -26,7 +27,7 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-const allowedOrigins = ['https://truegreenintrovert.com', 'http://localhost:5173'];
+const allowedOrigins = ['https://truegreenintrovert.com', 'https://www.truegreenintrovert.com', 'http://localhost:5173'];
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -296,7 +297,7 @@ app.get('/api/settings', async (req, res) => {
     const settings = await prisma.settings.findFirst();
     res.json(settings || { email: '', mobile: '', leetcode: '', instagram: '', youtube: '', linkedin: '' });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch settings' });
+    res.status(500).json({ error: 'Failed to fetch settings', details: error.message });
   }
 });
 
