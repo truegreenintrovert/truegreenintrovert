@@ -5,6 +5,7 @@ export default function Portfolio() {
   const [profile, setProfile] = useState(null);
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [visibleProjectsCount, setVisibleProjectsCount] = useState(6);
 
   useEffect(() => {
     // Fetch profile and projects simultaneously
@@ -117,29 +118,39 @@ export default function Portfolio() {
         {projects.length === 0 ? (
           <div className="text-center text-brand-text-muted py-20">No projects added yet.</div>
         ) : (
-          <div className="space-y-32">
-            {projects.map((project, index) => (
-              <div key={project.id} className={`flex flex-col ${index % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
-                <div className={`flex-1 ${index % 2 === 1 ? 'lg:pl-12' : 'lg:pr-12'}`}>
-                  <span className="text-brand-accent-light font-bold tracking-widest uppercase mb-4 block">{project.category}</span>
-                  <h3 className="text-4xl font-heading font-bold mb-6">{project.title}</h3>
-                  <p className="text-lg leading-relaxed text-brand-text-muted mb-8 whitespace-pre-wrap">
-                    {project.description}
-                  </p>
-                  <a href={project.projectUrl !== '#' ? project.projectUrl : undefined} className="inline-block bg-brand-accent/20 text-brand-accent-light py-3 px-8 rounded-full font-semibold border border-brand-accent-light/20 hover:bg-brand-accent-light hover:text-white transition-all duration-300 hover:neon-box cursor-pointer">
-                    View Project
-                  </a>
+          <div className="flex flex-col items-center">
+            <div className="space-y-32 w-full">
+              {projects.slice(0, visibleProjectsCount).map((project, index) => (
+                <div key={project.id} className={`flex flex-col ${index % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
+                  <div className={`flex-1 ${index % 2 === 1 ? 'lg:pl-12' : 'lg:pr-12'}`}>
+                    <span className="text-brand-accent-light font-bold tracking-widest uppercase mb-4 block">{project.category}</span>
+                    <h3 className="text-4xl font-heading font-bold mb-6">{project.title}</h3>
+                    <p className="text-lg leading-relaxed text-brand-text-muted mb-8 whitespace-pre-wrap">
+                      {project.description}
+                    </p>
+                    <a href={project.projectUrl !== '#' ? project.projectUrl : undefined} className="inline-block bg-brand-accent/20 text-brand-accent-light py-3 px-8 rounded-full font-semibold border border-brand-accent-light/20 hover:bg-brand-accent-light hover:text-white transition-all duration-300 hover:neon-box cursor-pointer">
+                      View Project
+                    </a>
+                  </div>
+                  <div className="flex-[1.5] w-full group relative overflow-hidden rounded-2xl shadow-2xl border border-transparent neon-border-hover">
+                    <div className="absolute inset-0 bg-brand-accent/20 group-hover:bg-transparent transition-colors duration-500 z-10 rounded-2xl pointer-events-none"></div>
+                    <img 
+                      src={project.imageUrl} 
+                      alt={project.title} 
+                      className="w-full h-auto max-h-[600px] object-cover transform group-hover:scale-105 transition-transform duration-700 rounded-2xl"
+                    />
+                  </div>
                 </div>
-                <div className="flex-[1.5] w-full group relative overflow-hidden rounded-2xl shadow-2xl border border-transparent neon-border-hover">
-                  <div className="absolute inset-0 bg-brand-accent/20 group-hover:bg-transparent transition-colors duration-500 z-10 rounded-2xl pointer-events-none"></div>
-                  <img 
-                    src={project.imageUrl} 
-                    alt={project.title} 
-                    className="w-full h-auto max-h-[600px] object-cover transform group-hover:scale-105 transition-transform duration-700 rounded-2xl"
-                  />
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            {projects.length > visibleProjectsCount && (
+              <button 
+                onClick={() => setVisibleProjectsCount(prev => prev + 6)}
+                className="mt-20 inline-block bg-brand-primary/20 text-brand-primary-light py-4 px-10 rounded-full font-bold border border-brand-primary/40 hover:bg-brand-primary-light hover:text-white transition-all duration-300 hover:neon-box cursor-pointer"
+              >
+                Load More Projects
+              </button>
+            )}
           </div>
         )}
       </div>
