@@ -57,7 +57,7 @@ export default function ManagePortfolio({ token, uploadImage, setMessage }) {
       const url = editingPortId ? `/api/portfolio/${editingPortId}` : '/api/portfolio';
       const method = editingPortId ? 'PUT' : 'POST';
 
-      const res = await fetch(url, {
+      const res = await fetch(import.meta.env.VITE_API_URL + url, {
         method,
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({

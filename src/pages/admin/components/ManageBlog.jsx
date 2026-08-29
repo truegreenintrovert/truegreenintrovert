@@ -59,7 +59,7 @@ export default function ManageBlog({ token, uploadImage, setMessage }) {
       const url = editingBlogId ? `/api/blog/${editingBlogId}` : '/api/blog';
       const method = editingBlogId ? 'PUT' : 'POST';
 
-      const res = await fetch(url, {
+      const res = await fetch(import.meta.env.VITE_API_URL + url, {
         method,
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({

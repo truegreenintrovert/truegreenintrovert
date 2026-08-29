@@ -125,8 +125,10 @@ app.post('/api/upload', authenticateToken, upload.single('image'), (req, res) =>
   if (!req.file) {
     return res.status(400).json({ error: 'No image provided' });
   }
-  // Return the path where the image can be accessed
-  const imageUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
+  // Return the path where the image can be accessed dynamically
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+  const host = req.get('host');
+  const imageUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
   res.json({ imageUrl });
 });
 
@@ -148,7 +150,7 @@ app.post('/api/portfolio', authenticateToken, async (req, res) => {
     });
     res.json(project);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create project' });
+    res.status(500).json({ error: 'Failed to create project', details: error.message });
   }
 });
 
@@ -324,11 +326,20 @@ app.put('/api/settings', authenticateToken, async (req, res) => {
 // --- Debug API ---
 app.get('/api/debug-env', (req, res) => {
   const dbUrl = process.env.DATABASE_URL || 'NOT_SET';
+  
+  // Safely analyze the string without revealing the password
+  const hasHash = dbUrl.includes('#');
+  const hasEncodedHash = dbUrl.includes('%23');
+  const hasQuotes = dbUrl.startsWith('"');
+  
   // Mask the password for security before sending it back
   const maskedUrl = dbUrl.replace(/:([^:@]+)@/, ':***@');
   res.json({ 
     DATABASE_URL: maskedUrl,
-    PORT: process.env.PORT || 'NOT_SET'
+    PORT: process.env.PORT || 'NOT_SET',
+    hasHash,
+    hasEncodedHash,
+    hasQuotes
   });
 });
 
