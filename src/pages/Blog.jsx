@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../lib/api';
+import { mediaUrl } from '../lib/mediaUrl';
 
 export default function Blog() {
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + '/api/blog')
+    fetch(API_URL + '/api/blog')
       .then(res => res.ok ? res.json() : [])
       .then(data => {
         setBlogs(Array.isArray(data) ? data : []);
@@ -37,7 +39,7 @@ export default function Blog() {
               <article key={blog.id} className="group bg-[#161816] rounded-2xl overflow-hidden border border-transparent hover:border-brand-primary-light neon-border-hover transition-all duration-300 flex flex-col h-full shadow-lg">
                 <div className="relative h-48 overflow-hidden">
                   <div className="absolute inset-0 bg-brand-bg/20 group-hover:bg-transparent transition-colors duration-300 z-10"></div>
-                  <img src={blog.imageUrl} alt={blog.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                  <img src={mediaUrl(blog.imageUrl)} alt={blog.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute top-4 left-4 z-20">
                     <span className="bg-brand-accent/20 backdrop-blur-md text-brand-accent-light py-1 px-3 rounded-full text-xs font-semibold uppercase tracking-wider shadow-md neon-box">{blog.category}</span>
                   </div>

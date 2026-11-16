@@ -1,3 +1,4 @@
+import { API_URL } from '../../lib/api';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -5,7 +6,7 @@ export default function Footer() {
   const [settings, setSettings] = useState(null);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + '/api/settings')
+    fetch(API_URL + '/api/settings')
       .then(res => res.json())
       .then(data => setSettings(data))
       .catch(err => console.error(err));

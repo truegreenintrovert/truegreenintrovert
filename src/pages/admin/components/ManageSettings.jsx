@@ -1,3 +1,4 @@
+import { API_URL } from '../../../lib/api';
 import React, { useState, useEffect } from 'react';
 
 export default function ManageSettings({ token, setMessage }) {
@@ -12,7 +13,7 @@ export default function ManageSettings({ token, setMessage }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + '/api/settings')
+    fetch(API_URL + '/api/settings')
       .then(res => res.json())
       .then(data => {
         setSettings({
@@ -36,7 +37,7 @@ export default function ManageSettings({ token, setMessage }) {
     setIsSubmitting(true);
     setMessage('');
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/settings', {
+      const res = await fetch(API_URL + '/api/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(settings)

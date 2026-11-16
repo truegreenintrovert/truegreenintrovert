@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ridiImage from '../assets/ridi-hms.png';
+import { API_URL } from '../lib/api';
+import { mediaUrl } from '../lib/mediaUrl';
 
 export default function Portfolio() {
   const [profile, setProfile] = useState(null);
@@ -10,8 +12,8 @@ export default function Portfolio() {
   useEffect(() => {
     // Fetch profile and projects simultaneously
     Promise.all([
-      fetch(import.meta.env.VITE_API_URL + '/api/profile').then(res => res.ok ? res.json() : null),
-      fetch(import.meta.env.VITE_API_URL + '/api/portfolio').then(res => res.ok ? res.json() : [])
+      fetch(API_URL + '/api/profile').then(res => res.ok ? res.json() : null),
+      fetch(API_URL + '/api/portfolio').then(res => res.ok ? res.json() : [])
     ])
     .then(([profileData, projectsData]) => {
       setProfile(profileData || null);
@@ -46,7 +48,7 @@ export default function Portfolio() {
                 <div className="relative">
                   <div className="absolute inset-0 bg-brand-primary-light/20 rounded-full blur-2xl transform scale-110 animate-pulse"></div>
                   <img 
-                    src={profile.imageUrl} 
+                    src={mediaUrl(profile.imageUrl)}
                     alt="Profile" 
                     className="relative z-10 w-64 h-64 lg:w-80 lg:h-80 object-cover rounded-full shadow-2xl border-4 border-[#161816]"
                   />
@@ -135,7 +137,7 @@ export default function Portfolio() {
                   <div className="flex-[1.5] w-full group relative overflow-hidden rounded-2xl shadow-2xl border border-transparent neon-border-hover">
                     <div className="absolute inset-0 bg-brand-accent/20 group-hover:bg-transparent transition-colors duration-500 z-10 rounded-2xl pointer-events-none"></div>
                     <img 
-                      src={project.imageUrl} 
+                      src={mediaUrl(project.imageUrl)}
                       alt={project.title} 
                       className="w-full h-auto max-h-[600px] object-cover transform group-hover:scale-105 transition-transform duration-700 rounded-2xl"
                     />

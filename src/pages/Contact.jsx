@@ -1,3 +1,4 @@
+import { API_URL } from '../lib/api';
 import { useState, useEffect } from 'react';
 
 export default function Contact() {
@@ -11,7 +12,7 @@ export default function Contact() {
   const [settings, setSettings] = useState(null);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + '/api/settings')
+    fetch(API_URL + '/api/settings')
       .then(res => res.json())
       .then(data => setSettings(data))
       .catch(err => console.error(err));
@@ -25,7 +26,7 @@ export default function Contact() {
     e.preventDefault();
     setStatus('sending');
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/messages', {
+      const res = await fetch(API_URL + '/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

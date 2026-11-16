@@ -53,10 +53,8 @@ const strictLimiter = rateLimit({
 app.use(express.json());
 
 // Setup static serving for uploaded images
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+const uploadDir = path.resolve(process.env.UPLOAD_DIR || path.join(__dirname, 'uploads'));
+fs.mkdirSync(uploadDir, { recursive: true });
 app.use('/uploads', express.static(uploadDir));
 
 // Configure multer storage
@@ -128,7 +126,8 @@ app.post('/api/upload', authenticateToken, upload.single('image'), (req, res) =>
   // Return the path where the image can be accessed dynamically
   const protocol = req.headers['x-forwarded-proto'] || req.protocol;
   const host = req.get('host');
-  const imageUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
+  const publicApiUrl = (process.env.PUBLIC_API_URL || `${protocol}://${host}`).replace(/\/$/, '');
+  const imageUrl = `${publicApiUrl}/uploads/${req.file.filename}`;
   res.json({ imageUrl });
 });
 

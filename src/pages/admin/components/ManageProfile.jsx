@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../../../lib/api';
+import { mediaUrl } from '../../../lib/mediaUrl';
 
 export default function ManageProfile({ token, uploadImage, setMessage }) {
   const [profBio, setProfBio] = useState('');
@@ -10,7 +12,7 @@ export default function ManageProfile({ token, uploadImage, setMessage }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchProfile = () => {
-    fetch(import.meta.env.VITE_API_URL + '/api/profile')
+    fetch(API_URL + '/api/profile')
       .then(res => res.json())
       .then(data => {
         setProfBio(data.bio || '');
@@ -33,7 +35,7 @@ export default function ManageProfile({ token, uploadImage, setMessage }) {
       let finalImageUrl = profExistingImage;
       if (profImage) finalImageUrl = await uploadImage(profImage);
 
-      const res = await fetch(import.meta.env.VITE_API_URL + '/api/profile', {
+      const res = await fetch(API_URL + '/api/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({
@@ -59,7 +61,7 @@ export default function ManageProfile({ token, uploadImage, setMessage }) {
       <form onSubmit={handleUpdateProfile} className="space-y-4 max-w-2xl">
         <div>
           <label className="block text-sm text-brand-text-muted mb-1">Profile Image</label>
-          {profExistingImage && <div className="mb-2"><img src={profExistingImage} alt="Current" className="h-16 w-16 object-cover rounded-full border border-white/10" /></div>}
+          {profExistingImage && <div className="mb-2"><img src={mediaUrl(profExistingImage)} alt="Current" className="h-16 w-16 object-cover rounded-full border border-white/10" /></div>}
           <input type="file" accept="image/*" onChange={(e) => setProfImage(e.target.files[0])} className="w-full bg-brand-bg border border-white/10 rounded-lg p-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-primary/20 file:text-brand-primary-light hover:file:bg-brand-primary/30" />
         </div>
         <div>

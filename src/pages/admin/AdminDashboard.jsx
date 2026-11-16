@@ -1,3 +1,4 @@
+import { API_URL } from '../../lib/api';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
@@ -27,7 +28,7 @@ export default function AdminDashboard() {
     if (!imageFile) return null;
     const formData = new FormData();
     formData.append('image', imageFile);
-    const res = await fetch(import.meta.env.VITE_API_URL + '/api/upload', {
+    const res = await fetch(API_URL + '/api/upload', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` },
       body: formData

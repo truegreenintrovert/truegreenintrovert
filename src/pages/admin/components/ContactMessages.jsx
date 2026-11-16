@@ -1,10 +1,11 @@
+import { API_URL } from '../../../lib/api';
 import React, { useState, useEffect } from 'react';
 
 export default function ContactMessages({ token }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + '/api/messages', { 
+    fetch(API_URL + '/api/messages', {
       headers: { 'Authorization': `Bearer ${token}` } 
     })
     .then(res => res.json())

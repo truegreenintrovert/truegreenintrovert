@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../../../lib/api';
+import { mediaUrl } from '../../../lib/mediaUrl';
 
 export default function ManagePortfolio({ token, uploadImage, setMessage }) {
   const [portfolios, setPortfolios] = useState([]);
@@ -11,7 +13,7 @@ export default function ManagePortfolio({ token, uploadImage, setMessage }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchPortfolios = () => {
-    fetch(import.meta.env.VITE_API_URL + '/api/portfolio').then(res => res.json()).then(data => setPortfolios(data));
+    fetch(API_URL + '/api/portfolio').then(res => res.json()).then(data => setPortfolios(data));
   };
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function ManagePortfolio({ token, uploadImage, setMessage }) {
   const handleDeletePort = async (id) => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/portfolio/${id}`, {
+      const res = await fetch(API_URL + `/api/portfolio/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -57,7 +59,7 @@ export default function ManagePortfolio({ token, uploadImage, setMessage }) {
       const url = editingPortId ? `/api/portfolio/${editingPortId}` : '/api/portfolio';
       const method = editingPortId ? 'PUT' : 'POST';
 
-      const res = await fetch(import.meta.env.VITE_API_URL + url, {
+      const res = await fetch(API_URL + url, {
         method,
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({
@@ -100,7 +102,7 @@ export default function ManagePortfolio({ token, uploadImage, setMessage }) {
         </div>
         <div>
           <label className="block text-sm text-brand-text-muted mb-1">Project Image (Optional)</label>
-          {portExistingImage && <div className="mb-2"><img src={portExistingImage} alt="Current" className="h-16 rounded border border-white/10" /></div>}
+          {portExistingImage && <div className="mb-2"><img src={mediaUrl(portExistingImage)} alt="Current" className="h-16 rounded border border-white/10" /></div>}
           <input type="file" accept="image/*" onChange={(e) => setPortImage(e.target.files[0])} className="w-full bg-brand-bg border border-white/10 rounded-lg p-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-primary/20 file:text-brand-primary-light hover:file:bg-brand-primary/30" />
         </div>
         <div>
@@ -118,7 +120,7 @@ export default function ManagePortfolio({ token, uploadImage, setMessage }) {
           {portfolios.map(port => (
             <div key={port.id} className="flex items-center justify-between bg-brand-bg p-4 rounded-lg border border-white/5">
               <div className="flex items-center gap-4">
-                <img src={port.imageUrl} alt={port.title} className="w-16 h-16 object-cover rounded-md" />
+                <img src={mediaUrl(port.imageUrl)} alt={port.title} className="w-16 h-16 object-cover rounded-md" />
                 <div>
                   <h4 className="font-bold text-white">{port.title}</h4>
                   <p className="text-sm text-brand-text-muted">{port.category}</p>

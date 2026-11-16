@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../../../lib/api';
+import { mediaUrl } from '../../../lib/mediaUrl';
 
 export default function ManageBlog({ token, uploadImage, setMessage }) {
   const [blogs, setBlogs] = useState([]);
@@ -12,7 +14,7 @@ export default function ManageBlog({ token, uploadImage, setMessage }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchBlogs = () => {
-    fetch(import.meta.env.VITE_API_URL + '/api/blog').then(res => res.json()).then(data => setBlogs(data));
+    fetch(API_URL + '/api/blog').then(res => res.json()).then(data => setBlogs(data));
   };
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function ManageBlog({ token, uploadImage, setMessage }) {
   const handleDeleteBlog = async (id) => {
     if (!window.confirm("Are you sure you want to delete this blog?")) return;
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + `/api/blog/${id}`, {
+      const res = await fetch(API_URL + `/api/blog/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -59,7 +61,7 @@ export default function ManageBlog({ token, uploadImage, setMessage }) {
       const url = editingBlogId ? `/api/blog/${editingBlogId}` : '/api/blog';
       const method = editingBlogId ? 'PUT' : 'POST';
 
-      const res = await fetch(import.meta.env.VITE_API_URL + url, {
+      const res = await fetch(API_URL + url, {
         method,
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({
@@ -103,7 +105,7 @@ export default function ManageBlog({ token, uploadImage, setMessage }) {
         </div>
         <div>
           <label className="block text-sm text-brand-text-muted mb-1">Blog Image (Optional)</label>
-          {blogExistingImage && <div className="mb-2"><img src={blogExistingImage} alt="Current" className="h-16 rounded border border-white/10" /></div>}
+          {blogExistingImage && <div className="mb-2"><img src={mediaUrl(blogExistingImage)} alt="Current" className="h-16 rounded border border-white/10" /></div>}
           <input type="file" accept="image/*" onChange={(e) => setBlogImage(e.target.files[0])} className="w-full bg-brand-bg border border-white/10 rounded-lg p-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-primary/20 file:text-brand-primary-light hover:file:bg-brand-primary/30" />
         </div>
         <div>
@@ -125,7 +127,7 @@ export default function ManageBlog({ token, uploadImage, setMessage }) {
           {blogs.map(blog => (
             <div key={blog.id} className="flex items-center justify-between bg-brand-bg p-4 rounded-lg border border-white/5">
               <div className="flex items-center gap-4">
-                <img src={blog.imageUrl} alt={blog.title} className="w-16 h-16 object-cover rounded-md" />
+                <img src={mediaUrl(blog.imageUrl)} alt={blog.title} className="w-16 h-16 object-cover rounded-md" />
                 <div>
                   <h4 className="font-bold text-white">{blog.title}</h4>
                   <p className="text-sm text-brand-text-muted">{blog.date} &bull; {blog.category}</p>

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { API_URL } from '../lib/api';
+import { mediaUrl } from '../lib/mediaUrl';
 
 export default function BlogPost() {
   const { id } = useParams();
@@ -8,7 +10,7 @@ export default function BlogPost() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + `/api/blog/${id}`)
+    fetch(API_URL + `/api/blog/${id}`)
       .then(res => {
         if (!res.ok) throw new Error('Post not found');
         return res.json();
@@ -79,7 +81,7 @@ export default function BlogPost() {
         {/* Featured Image */}
         <div className="rounded-3xl overflow-hidden mb-16 border border-brand-primary-light/50 neon-box relative aspect-video">
           <img 
-            src={post.imageUrl} 
+            src={mediaUrl(post.imageUrl)}
             alt={post.title} 
             className="w-full h-full object-cover"
           />
