@@ -27,7 +27,7 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-const allowedOrigins = ['https://truegreenintrovert.com', 'https://www.truegreenintrovert.com', 'http://localhost:5173'];
+const allowedOrigins = [ 'https://p.sabhav.com','https://truegreenintrovert.com', 'https://www.truegreenintrovert.com', 'http://localhost:5173'];
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
