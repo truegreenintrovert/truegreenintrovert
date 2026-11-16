@@ -1,3 +1,29 @@
+
+# Hi, I'm Yogesh Kumar Kashyap 👋
+
+I build practical web and mobile apps, from study tools and document workflows to booking platforms. I enjoy working across the frontend and backend to turn ideas into useful products.
+
+- 🔭 Building web and mobile applications
+- 🧰 Working with React, Node.js, Flutter, and Supabase
+- 📫 Reach me at [yogesh@fruitenium.in](mailto:yogesh@fruitenium.in)
+
+## Featured projects
+
+- [TracePG](https://github.com/truegreenintrovert/TracePG) — A NEET-PG preparation platform with practice questions, progress tracking, and revision tools.
+- [ScanFlow](https://github.com/truegreenintrovert/ScanFlow) — An offline-first Android document scanner with on-device OCR and PDF export.
+- [Pagdiwala](https://github.com/truegreenintrovert/pagdiwala) — A turban and safa rental app for browsing products and managing rental requests.
+- [StreamFetch](https://github.com/truegreenintrovert/StreamFetch) — A React and Node.js app for fetching video details and downloading videos.
+- [SolveJob](https://github.com/truegreenintrovert/solve-jobs) — A job portal for browsing roles and managing company listings.
+
+## Tools and technologies
+
+React · Node.js · Flutter · JavaScript · Tailwind CSS · Supabase · SQLite · Cloudflare
+
+## Find me online
+
+- [GitHub](https://github.com/truegreenintrovert)
+- [Email](mailto:yogesh@fruitenium.in)
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
